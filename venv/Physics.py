@@ -63,11 +63,8 @@ def terminate():
 if __name__ == "__main__":
     pygame.init()
     clock = pygame.time.Clock()
-    fon = pygame.transform.scale(load_image('fon.jpg'),
-                                 (WIDTH, HEIGHT))
     size = WIDTH, HEIGHT
     screen = pygame.display.set_mode(size)
-    screen.blit(fon, (0, 0))
 
     border = Border(5, 5, WIDTH - 5, 5)
     border1 = Border(5, HEIGHT - 5, WIDTH - 5, HEIGHT - 5)
@@ -78,6 +75,8 @@ if __name__ == "__main__":
     vertical_borders.add(border2, border3)
     all_sprites.add(border, border1, border2, border3)
     all_sprites.add(ball)
+    fon = pygame.transform.scale(load_image('main_background.png'),
+                                 (WIDTH, HEIGHT))
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
