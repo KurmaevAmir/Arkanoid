@@ -49,14 +49,6 @@ class StartGame:
         self.fon = pygame.transform.scale((load_image("fon.jpg")),
                                           (WIDTH, HEIGHT))
         self.intro_text = ["Добро пожаловать!"]
-                           #"Цель игры",
-                           #"Очистить игровое поле от блоков, попадая"
-                           #" по ним шариком", "",
-                           #"Шарик отскакивает от ракетки, которую вы"
-                           #' можете передвигать с помощью клавишь'
-                           #' "A" "D"', "", "", "", "", "", "", "",
-                           #"", "                              ",
-                           #"        1mpr0ve Production"]
         self.welcome()
 
     def render(self):
@@ -74,30 +66,12 @@ class StartGame:
         self.coords = []
         for i in range(self.height):
             for j in range(self.width):
-                '''self.coords.append([self.left + j * self.cell_size,
-                                    self.top + i * self.cell_size,
-                                    (self.left + j * self.cell_size)
-                                    + self.cell_size,
-                                    (self.top + i * self.cell_size)
-                                    + self.cell_size])
-                pygame.draw.rect(screen, pygame.Color("white"),
-                                 (self.left + j * self.cell_size,
-                                  self.top + i * self.cell_size,
-                                  self.cell_size, self.cell_size), 1)'''
                 pygame.draw.rect(screen, pygame.Color("white"),
                                  (self.left,
                                   self.top + i * (self.cell_size
                                                   + self.len_height),
                                   self.len_width, self.len_height),
                                  1, border_radius=50)
-                '''string_rendered = font.render(self.board[i], 1,
-                                              pygame.Color("white"))
-                text_rect = string_rendered.get_rect()
-                text_rect.top = text_coord
-                text_coord += 78
-                text_rect.x = text_rect_list[i]
-                text_coord += text_rect.height
-                self.screen.blit(string_rendered, text_rect)'''
                 write_text(self.board, font, text_rect_list,
                            text_coord, 78, screen)
                 self.coords.append([self.left,
@@ -114,15 +88,6 @@ class StartGame:
         text_coord = 50
         font = pygame.font.Font("font/WellwaitFree Regular.otf", 18)
         self.screen.blit(self.fon, (0, 0))
-        '''for line in self.intro_text:
-            string_rendered = font.render(line, 1,
-                                          pygame.Color('white'))
-            intro_rect = string_rendered.get_rect()
-            text_coord += 10
-            intro_rect.top = text_coord
-            intro_rect.x = 200
-            text_coord += intro_rect.height
-            self.screen.blit(string_rendered, intro_rect)'''
         indent_list = [200]
         write_text(self.intro_text, font, indent_list, text_coord,
                    10, screen)
@@ -132,9 +97,6 @@ class StartGame:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     terminate()
-                '''elif event.type == pygame.KEYDOWN or \
-                        event.type == pygame.MOUSEBUTTONDOWN:
-                    return ''' # начинаем игру
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     total = self.get_click(event.pos)
                     if self.cond:
@@ -145,16 +107,6 @@ class StartGame:
             self.render()
             pygame.display.flip()
             clock.tick(FPS)
-
-    """def cells(self):
-        self.width = 1
-        self.height = 4
-        self.len_width = 190
-        self.len_height = 65
-        self.board = ["Играть", "Правила", "Рекорд", "Вход"]
-        self.left = 203
-        self.top = 90
-        self.cell_size = 50"""
 
     def get_cell(self, mouse_pos):
         x, y = mouse_pos
@@ -197,42 +149,6 @@ class StartGame:
             self.cond = False
         print(cell)
 
-'''def start_screen():
-    print("Добро пожаловать!")
-    intro_text = ["Добро пожаловать!", "",
-                  "Цель игры",
-                  "Очистить игровое поле от блоков, попадая по ним",
-                  "шариком", "",
-                  "Шарик отскакивает от ракетки, которую вы можете ",
-                  'передвигать с помощью клавишь "A" "D"', "", "",
-                  "", "", "", "", "", "",
-                  "                              "
-                  "        1mpr0ve Production"]
-
-    fon = pygame.transform.scale(load_image('fon.jpg'),
-                                 (WIDTH, HEIGHT))
-    screen.blit(fon, (0, 0))
-    font = pygame.font.Font("font\WellwaitFree Regular.otf", 18)
-    text_coord = 50
-    for line in intro_text:
-        string_rendered = font.render(line, 1, pygame.Color('white'))
-        intro_rect = string_rendered.get_rect()
-        text_coord += 10
-        intro_rect.top = text_coord
-        intro_rect.x = 10
-        text_coord += intro_rect.height
-        screen.blit(string_rendered, intro_rect)
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                terminate()
-            elif event.type == pygame.KEYDOWN or \
-                    event.type == pygame.MOUSEBUTTONDOWN:
-                return  # начинаем игру
-        pygame.display.flip()
-        clock.tick(FPS)'''
-
 
 class Rules:
     def __init__(self, screen):
@@ -266,8 +182,6 @@ class Record:
     def __init__(self, screen, session, time):
         self.screen = screen
         best_session, best_time = self.retrievingData()
-        '''best_session = "0000000000"
-        best_time = "0000"'''
         session
         time
         self.text = [f"{best_session} \t {best_time}", "",
