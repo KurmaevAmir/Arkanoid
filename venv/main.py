@@ -5,6 +5,8 @@ import random
 
 import pygame
 
+from game import Game
+
 global exit_code, symbols
 symbols = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
            "a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
@@ -252,6 +254,7 @@ class Record:
 
 
 if __name__ == "__main__":
+    game = Game()
     f = open("database/BestTime.txt", mode="r", encoding="UTF-8")
     best_time = f.read()
     f.close()
@@ -277,5 +280,8 @@ if __name__ == "__main__":
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
+        game.handle_events()
+        game.update()
+        game.draw()
         pygame.display.update()
         clock.tick(FPS)
