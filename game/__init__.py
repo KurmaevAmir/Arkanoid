@@ -35,9 +35,9 @@ class Game:
 
     def handle_events(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
+        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             self.player.move_left()
-        if keys[pygame.K_RIGHT]:
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             self.player.move_right()
         if self.game_over and keys[pygame.K_SPACE]:
             self.reset()
