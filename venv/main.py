@@ -1,9 +1,18 @@
 import os
 import sys
+import sqlite3
+import random
 
 import pygame
 
-global exit_code
+global exit_code, symbols
+symbols = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
+           "a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
+           "k", "l", "m", "n", "o", "p", "q", "r", "s", "t",
+           "u", "v", "w", "x", "y", "z", "A", "B", "C", "D",
+           "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
+           "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X",
+           "Y", "Z"]
 exit_code = ""
 
 
@@ -41,6 +50,24 @@ def write_text(text, font, indent_list, text_coord, k, screen):
         text_rect.x = indent_list[n]
         text_coord += text_rect.height
         screen.blit(string_rendered, text_rect)
+
+
+def retrievingSessionList():
+    con = sqlite3.connect("database/Records.db")
+    cur = con.cursor()
+    result = cur.execute("""SELECT Session FROM ID""").fetchall()
+    con.close()
+    return result
+
+
+def generationSession(session_list):
+    session = ""
+    for i in range(10):
+        session += random.choice(symbols)
+    while session in session_list:
+        session = generationSession(session_list)
+    print(f"Сессия {session} начата!")
+    return session
 
 
 class StartGame:
@@ -179,11 +206,10 @@ class Rules:
 
 
 class Record:
-    def __init__(self, screen, session, time):
+    def __init__(self, screen, session, time, best_time):
+        self.best_time = best_time
         self.screen = screen
         best_session, best_time = self.retrievingData()
-        session
-        time
         self.text = [f"{best_session} \t {best_time}", "",
                      f"{session} \t {time}"]
         text_coord = 50
@@ -204,13 +230,33 @@ class Record:
             pygame.display.flip()
             clock.tick(FPS)
 
+    def retrievingSession(self, best_time):
+        con = sqlite3.connect("database/Records.db")
+        cur = con.cursor()
+        result = cur.execute(f"""SELECT SESSION FROM ID
+                                     WHERE SessionNumber=(
+                                 SELECT ID FROM RecordList
+                                     WHERE BestTime == {best_time})
+                              """).fetchall()
+        con.close()
+        result = result[0][0]
+        return result
+
     def retrievingData(self):
-        return ("0000000000", "0000")
+        best_time = self.best_time
+        while len(best_time) != 4:
+            best_time = "0" + best_time
+        return (self.retrievingSession(self.best_time),
+                best_time)
 
 
 
 if __name__ == "__main__":
-    session = "0000000000"
+    f = open("database/BestTime.txt", mode="r", encoding="UTF-8")
+    best_time = f.read()
+    f.close()
+    session_list = retrievingSessionList()
+    session = generationSession(session_list)
     time = "0000"
     pygame.init()
     clock = pygame.time.Clock()
@@ -224,7 +270,7 @@ if __name__ == "__main__":
         if exit_code == "start2":
             Rules(screen)
         elif exit_code == "start3":
-            Record(screen, session, time)
+            Record(screen, session, time, best_time)
         StartGame(screen)
     screen.blit(fon, (0, 0))
     while True:
