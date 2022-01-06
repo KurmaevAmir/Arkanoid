@@ -27,10 +27,20 @@ class Bricks:
         hits = pygame.sprite.spritecollide(ball, self.all_bricks, False)
         if hits:
             hit_rect = hits[0].rect
-            if hit_rect.left < ball.rect.right or ball.rect.left < hit_rect.right:
-                ball.bounce_y()
-            if hit_rect.bottom > ball.rect.top or hit_rect.top < ball.rect.bottom:
-                ball.bounce_x()
+            if ball.velocity[0] > 0:
+                if ball.rect.center[0] > hit_rect.left:
+                    ball.bounce_y()
+                elif ball.rect.center[0] == hit_rect.left - 11:
+                    ball.bounce_xy()
+                else:
+                    ball.bounce_x()
+            else:
+                if ball.rect.center[0] < hit_rect.right:
+                    ball.bounce_y()
+                elif ball.rect.center[0] == hit_rect.right + 11:
+                    ball.bounce_xy()
+                else:
+                    ball.bounce_x()
 
             self.score += 1
             hits[0].kill()
@@ -39,8 +49,8 @@ class Bricks:
 class Brick(pygame.sprite.Sprite):
     def __init__(self, row, col):
         super().__init__()
-        self.x_pos = 1.2 * (Constants.brick_start + (col * 64) + 32)
-        self.y_pos = 1.4 * (Constants.brick_start + (row * 32) + 16)
+        self.x_pos = 1.1 * (Constants.brick_start + (col * 64) + 32)
+        self.y_pos = 1.2 * (Constants.brick_start + (row * 32) + 16)
         self.image = pygame.image.load(bricks[row])
         self.rect = self.image.get_rect()
         self.rect.center = (self.x_pos, self.y_pos)

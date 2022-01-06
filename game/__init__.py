@@ -15,7 +15,7 @@ class Game:
         self.bg_color = pygame.Color('black')
 
         self.font = pygame.font.Font('font/my_font.otf', 16)
-        self.game_over = False
+        self.game_over = 0
 
         self.player = Player()
         self.ball = Ball()
@@ -26,7 +26,7 @@ class Game:
         self.bricks = Bricks(self.all_sprites)
 
     def reset(self):
-        self.game_over = False
+        self.game_over = 0
         self.player = Player()
         self.ball = Ball()
         self.all_sprites.empty()
@@ -39,7 +39,7 @@ class Game:
             self.player.move_left()
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             self.player.move_right()
-        if self.game_over and keys[pygame.K_SPACE]:
+        if self.game_over != 0 and keys[pygame.K_SPACE]:
             self.reset()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -50,7 +50,7 @@ class Game:
         if self.ball.is_off_screen():
             self.player.lose_life()
             if self.player.lives == 0:
-                self.game_over = True
+                self.game_over = -1
             self.ball.reset()
         self.ball.check_collide_paddle(self.player)
         self.bricks.check_collisions(self.ball)
@@ -60,10 +60,16 @@ class Game:
 
     def draw(self):
         self.screen.fill(self.bg_color)
+        if len(self.all_sprites) == 2:
+            self.game_over = 1
 
-        if self.game_over:
-            text = self.font.render("Игра окончена!", True, pygame.Color('white'))
-            self.screen.blit(text, (Constants.screen_width / 2 - 75, Constants.screen_height / 2))
+        if self.game_over != 0:
+            if self.game_over == 1:
+                text = self.font.render("Вы победили!", True, pygame.Color('white'))
+                self.screen.blit(text, (Constants.screen_width / 2 - 65, Constants.screen_height / 2))
+            elif self.game_over == -1:
+                text = self.font.render("Вы проиграли!", True, pygame.Color('white'))
+                self.screen.blit(text, (Constants.screen_width / 2 - 65, Constants.screen_height / 2))
         else:
             self.all_sprites.draw(self.screen)
 
