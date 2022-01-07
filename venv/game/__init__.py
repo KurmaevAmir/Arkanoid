@@ -43,8 +43,6 @@ class Game:
             self.player.move_left()
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             self.player.move_right()
-        if self.game_over != 0 and keys[pygame.K_SPACE]:
-            self.reset()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quit()
@@ -72,9 +70,11 @@ class Game:
             if self.game_over == 1:
                 text = self.font.render("Вы победили!", True, pygame.Color('white'))
                 self.screen.blit(text, (Constants.screen_width / 2 - 65, Constants.screen_height / 2))
+                return True
             elif self.game_over == -1:
                 text = self.font.render("Вы проиграли!", True, pygame.Color('white'))
                 self.screen.blit(text, (Constants.screen_width / 2 - 65, Constants.screen_height / 2))
+                return None
         else:
             self.all_sprites.draw(self.screen)
 
@@ -83,3 +83,4 @@ class Game:
 
             text = self.font.render(f'Счет: {self.bricks.score}', True, pygame.Color('white'))
             self.screen.blit(text, (Constants.screen_width - 100, Constants.screen_height - 30))
+            return False

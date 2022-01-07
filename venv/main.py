@@ -7,7 +7,8 @@ import pygame
 
 from game import Game
 
-global exit_code, symbols
+global exit_code, symbols, exit_code_list_level1, \
+    exit_code_list_level2
 symbols = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
            "a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
            "k", "l", "m", "n", "o", "p", "q", "r", "s", "t",
@@ -15,6 +16,8 @@ symbols = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
            "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
            "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X",
            "Y", "Z"]
+exit_code_list_level1 = ["start1", "start2", "start3"]
+exit_code_list_level2 = ["level1", "level2"]
 exit_code = ""
 
 
@@ -34,7 +37,7 @@ def load_image(name, colorkey=None):
     return image
 
 
-FPS = 60
+FPS = 90
 WIDTH, HEIGHT = 600, 600
 
 
@@ -42,16 +45,25 @@ def terminate():
     pygame.quit()
     sys.exit()
 
-def write_text(text, font, indent_list, text_coord, k, screen):
-    for n, line in enumerate(text):
-        string_rendered = font.render(line, 1,
-                                      pygame.Color('white'))
-        text_rect = string_rendered.get_rect()
-        text_rect.top = text_coord
-        text_coord += k
-        text_rect.x = indent_list[n]
-        text_coord += text_rect.height
-        screen.blit(string_rendered, text_rect)
+def write_text(text, font, indent_list, text_coord, k, screen, axis):
+    if axis == "y":
+        for n, line in enumerate(text):
+            string_rendered = font.render(line, 1,
+                                          pygame.Color('white'))
+            text_rect = string_rendered.get_rect()
+            text_rect.top = text_coord
+            text_coord += k
+            text_rect.x = indent_list[n]
+            text_coord += text_rect.height
+            screen.blit(string_rendered, text_rect)
+    else:
+        for n, line in enumerate(text):
+            string_rendered = font.render(line, 1,
+                                          pygame.Color("white"))
+            text_rect = string_rendered.get_rect()
+            text_rect.top = text_coord
+            text_rect.x = indent_list[n]
+            screen.blit(string_rendered, text_rect)
 
 
 def retrievingSessionList():
@@ -72,46 +84,81 @@ def generationSession(session_list):
     return session
 
 
+class Buttons:
+    def __init__(self, width, height, len_width, len_height, left,
+                 top, cell_size, screen):
+        """self.input_list = input_list # input_list = [width, height, len_width, len_height, left, top, cell_size, text,
+        # font, text_rect_list, text_coord, k, screen]"""
+        self.width = width
+        self.height = height
+        self.len_width = len_width
+        self.len_height = len_height
+        self.left = left
+        self.top = top
+        self.cell_size = cell_size
+        self.screen = screen
+        self.render()
+
+    def render(self):
+        self.coords = []
+        for i in range(self.height):
+            for j in range(self.width):
+                pygame.draw.rect(screen, pygame.Color("white"),
+                                 (self.left + j * (self.cell_size
+                                                   + self.len_width),
+                                  self.top + i * (self.cell_size
+                                                  + self.len_height),
+                                  self.len_width, self.len_height),
+                                 1, border_radius=50),
+                self.coords.append([self.left + j * (self.cell_size +
+                                                     self.len_width),
+                                    self.top + i * (self.cell_size +
+                                                    self.len_height),
+                                    self.left + self.len_width + j
+                                    * (self.cell_size +
+                                       self.len_width),
+                                    self.len_height + self.top + i
+                                    * (self.cell_size +
+                                       self.len_height)])
+
+    def get_cell(self, mouse_pos):
+        x, y = mouse_pos
+        cond = True
+        for i in range(self.width * self.height):
+            if cond is False:
+                break
+            if x > self.coords[i][0] and x < self.coords[i][2]:
+                if y > self.coords[i][1] and y < self.coords[i][3]:
+                    count = 0
+                    cond = True
+                    pos = i
+                    while cond:
+                        if pos < self.width:
+                            return (count, pos)
+                        elif pos - self.width >= 0:
+                            count += 1
+                            pos -= self.width
+                        else:
+                            cond = False
+
+
 class StartGame:
     def __init__(self, screen):
         self.screen = screen
         self.fon = pygame.transform.scale((load_image("fon.jpg")),
                                           (WIDTH, HEIGHT))
+        font = pygame.font.Font("font/WellwaitFree Regular.otf", 30)
         self.intro_text = ["Добро пожаловать!"]
         self.welcome()
 
-    def render(self):
-        self.width = 1
-        self.height = 3
-        self.len_width = 190
-        self.len_height = 65
-        self.board = ["Играть", "Правила", "Рекорд"]
-        self.left = 200
-        self.top = 150
-        self.cell_size = 50
+    def text(self):
+        text = ["Играть", "Правила", "Рекорд"]
+        font = pygame.font.Font("font/WellwaitFree Regular.otf", 30)
         text_rect_list = [238, 225, 234]
         text_coord = 165
-        font = pygame.font.Font("font/WellwaitFree Regular.otf", 30)
-        self.coords = []
-        for i in range(self.height):
-            for j in range(self.width):
-                pygame.draw.rect(screen, pygame.Color("white"),
-                                 (self.left,
-                                  self.top + i * (self.cell_size
-                                                  + self.len_height),
-                                  self.len_width, self.len_height),
-                                 1, border_radius=50)
-                write_text(self.board, font, text_rect_list,
-                           text_coord, 78, screen)
-                self.coords.append([self.left,
-                                    self.top + i * (self.cell_size +
-                                                    self.len_height),
-                                    self.left + self.len_width,
-                                    self.len_height + self.top + i
-                                    * (self.cell_size +
-                                       self.len_height)])
-        string_rendered = font.render(self.board[0], 1,
-                                      pygame.Color("white"))
+        k = 78
+        write_text(text, font, text_rect_list, text_coord, k,
+                   self.screen, "y")
 
     def welcome(self):
         text_coord = 50
@@ -119,7 +166,7 @@ class StartGame:
         self.screen.blit(self.fon, (0, 0))
         indent_list = [200]
         write_text(self.intro_text, font, indent_list, text_coord,
-                   10, screen)
+                   10, self.screen, "y")
         print("Добро пожаловать!")
 
         while True:
@@ -133,50 +180,25 @@ class StartGame:
             pygame.display.flip()
             clock.tick(FPS)
 
-            self.render()
+            self.text()
+            self.buttons = Buttons(1, 3, 190, 65, 200, 150, 50,
+                                   self.screen)
             pygame.display.flip()
             clock.tick(FPS)
 
-    def get_cell(self, mouse_pos):
-        x, y = mouse_pos
-        cond = True
-        for i in range(3):
-            if cond is False:
-                break
-            if x > self.coords[i][0] and x < self.coords[i][2]:
-                if y > self.coords[i][1] and y < self.coords[i][3]:
-                    count = 0
-                    cond = True
-                    pos = i
-                    while cond:
-                        if pos < self.width:
-                            return (count)
-                        elif pos - self.width >= 0:
-                            count += 1
-                            pos -= self.width
-                        else:
-                            cond = False
-
-    def game(self):
-        pass
-
     def on_click(self, cell_coords):
-        global exit_code
-        if cell_coords == 0:
-            exit_code = "start1"
-        elif cell_coords == 1:
-            exit_code = "start2"
-        elif cell_coords == 2:
-            exit_code = "start3"
+        global exit_code, exit_code_list_level1
+        exit_code = exit_code_list_level1[cell_coords]
 
     def get_click(self, mouse_pos):
-        cell = self.get_cell(mouse_pos)
+        cell = self.buttons.get_cell(mouse_pos)
         if cell is not None:
             self.cond = True
-            self.on_click(cell)
+            self.on_click(cell[0])
+            print(cell[0])
         else:
             self.cond = False
-        print(cell)
+            print(None)
 
 
 class Rules:
@@ -195,7 +217,7 @@ class Rules:
                                      (WIDTH, HEIGHT))
         screen.blit(fon, (0, 0))
         write_text(self.rules_text, font, indent_list,
-                   text_coord, 10, screen)
+                   text_coord, 10, screen, "y")
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -221,7 +243,7 @@ class Record:
                                      (WIDTH, HEIGHT))
         screen.blit(fon, (0, 0))
         write_text(self.text, font, indent_list, text_coord,
-                   25, self.screen)
+                   25, self.screen, "y")
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -252,6 +274,59 @@ class Record:
                 best_time)
 
 
+class LevelChange:
+    def __init__(self, screen):
+        self.screen = screen
+        self.buttons = Buttons(2, 1, 190, 65, 0, 535, 220,
+                               self.screen)
+        self.cycle()
+
+    def text(self):
+        text = ["Вернутся", "Следующий"]
+        font = pygame.font.Font("font/WellwaitFree Regular.otf", 26)
+        text_rect_list = [28, 420]
+        text_coord = 550
+        k = 0
+        write_text(text, font, text_rect_list, text_coord, k,
+                   self.screen, "x")
+
+        text = ["Поздравляю!", "",
+                "Вы прошли первый уровень!", "",
+                "Вы можете начать проходить уровень заново",
+                "Или перейти к следующему уровню!"]
+        font = pygame.font.Font(None, 32)
+        indent_list = [10] * 6
+        text_coord = 50
+        write_text(text, font, indent_list,
+                   text_coord, 10, self.screen, "y")
+
+    def on_click(self, cell_coords):
+        global exit_code, exit_code_list_level2
+        exit_code = exit_code_list_level2[cell_coords]
+
+    def get_click(self, mouse_pos):
+        cell = self.buttons.get_cell(mouse_pos)
+        if cell is not None:
+            self.cond = True
+            self.on_click(cell[1])
+            print(cell[1])
+        else:
+            self.cond = False
+            print(None)
+
+    def cycle(self):
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    total = self.get_click(event.pos)
+                    if self.cond:
+                        return
+            self.text()
+            pygame.display.flip()
+            clock.tick(FPS)
+
 
 if __name__ == "__main__":
     game = Game()
@@ -275,13 +350,27 @@ if __name__ == "__main__":
         elif exit_code == "start3":
             Record(screen, session, time, best_time)
         StartGame(screen)
+    exit_code = "level1"
     screen.blit(fon, (0, 0))
+    level1 = False
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
-        game.handle_events()
-        game.update()
-        game.draw()
+            elif (event.type == pygame.KEYDOWN or \
+                  event.type == pygame.MOUSEBUTTONDOWN) and \
+                    level1 is None:
+                game = Game()
+                level1 = False
+        if exit_code == "level1" and level1 is False:
+            game.handle_events()
+            game.update()
+            level1 = game.draw()
+        elif exit_code == "level2":
+            print("Переходим ко второму уровню!")
+        if level1:
+            LevelChange(screen)
+            game = Game()
+            level1 = False
         pygame.display.update()
         clock.tick(FPS)
