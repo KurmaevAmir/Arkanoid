@@ -1,5 +1,6 @@
 import pygame
 import sys
+import os
 from game.constants import Constants
 from game.player import Player
 from game.ball import Ball
@@ -12,7 +13,10 @@ class Game:
         self.screen = pygame.display.set_mode((Constants.screen_width, Constants.screen_height))
         self.clock = pygame.time.Clock()
 
-        self.bg_color = pygame.Color('black')
+        fullname = os.path.join('data', "main_background.png")
+        image = pygame.image.load(fullname)
+        self.fon = pygame.transform.scale(image, (600, 600))
+        #self.bg_color = pygame.Color('black')
 
         self.font = pygame.font.Font('font/my_font.otf', 16)
         self.game_over = 0
@@ -59,7 +63,8 @@ class Game:
         self.clock.tick(120)
 
     def draw(self):
-        self.screen.fill(self.bg_color)
+        #self.screen.fill(self.bg_color)
+        self.screen.blit(self.fon, (0, 0))
         if len(self.all_sprites) == 2:
             self.game_over = 1
 
