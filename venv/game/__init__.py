@@ -5,6 +5,7 @@ from game.constants import Constants
 from game.player import Player
 from game.ball import Ball
 from game.bricks import Bricks
+import time
 
 
 class Game:
@@ -16,6 +17,9 @@ class Game:
         fullname = os.path.join('data', "main_background.png")
         image = pygame.image.load(fullname)
         self.fon = pygame.transform.scale(image, (600, 600))
+        self.start_time = time.time()
+        self.finish_time = 0
+        self.real_time = 0
         #self.bg_color = pygame.Color('black')
 
         self.font = pygame.font.Font('font/my_font.otf', 16)
@@ -30,6 +34,9 @@ class Game:
         self.bricks = Bricks(self.all_sprites)
 
     def reset(self):
+        self.real_time = 0
+        self.start_time = time.time()
+        self.finish_time = 0
         self.game_over = 0
         self.player = Player()
         self.ball = Ball()
@@ -38,6 +45,8 @@ class Game:
         self.bricks = Bricks(self.all_sprites)
 
     def handle_events(self):
+        self.real_time = "{:.1f}s" \
+            .format(time.time() - self.start_time)
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             self.player.move_left()
@@ -67,20 +76,32 @@ class Game:
             self.game_over = 1
 
         if self.game_over != 0:
+            if self.finish_time == 0:
+                self.finish_time = "time elapsed: {:.1f}s" \
+                    .format(time.time() - self.start_time)
             if self.game_over == 1:
-                text = self.font.render("Вы победили!", True, pygame.Color('white'))
-                self.screen.blit(text, (Constants.screen_width / 2 - 65, Constants.screen_height / 2))
+                text = self.font.render("", True,
+                                        pygame.Color('white'))
+                self.screen.blit(text, (Constants.screen_width /
+                                        2 - 65,
+                                        Constants.screen_height / 2))
                 return True
             elif self.game_over == -1:
-                text = self.font.render("Вы проиграли!", True, pygame.Color('white'))
-                self.screen.blit(text, (Constants.screen_width / 2 - 65, Constants.screen_height / 2))
+                text = self.font.render("Вы проиграли!", True,
+                                        pygame.Color('white'))
+                self.screen.blit(text, (Constants.screen_width /
+                                        2 - 65,
+                                        Constants.screen_height / 2))
                 return None
         else:
             self.all_sprites.draw(self.screen)
 
-            text = self.font.render(f'Жизней: {self.player.lives}', True, pygame.Color('white'))
+            text = self.font.render(f'Жизней: {self.player.lives}',
+                                    True, pygame.Color('white'))
             self.screen.blit(text, (15, Constants.screen_height - 30))
 
-            text = self.font.render(f'Счет: {self.bricks.score}', True, pygame.Color('white'))
-            self.screen.blit(text, (Constants.screen_width - 100, Constants.screen_height - 30))
+            text = self.font.render(f'Время: {self.real_time}', True,
+                                    pygame.Color('white'))
+            self.screen.blit(text, (Constants.screen_width - 100,
+                                    Constants.screen_height - 40))
             return False

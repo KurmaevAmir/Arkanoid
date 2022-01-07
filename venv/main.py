@@ -37,7 +37,7 @@ def load_image(name, colorkey=None):
     return image
 
 
-FPS = 90
+FPS = 120
 WIDTH, HEIGHT = 600, 600
 
 

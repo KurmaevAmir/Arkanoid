@@ -5,7 +5,8 @@ from game.constants import Constants
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load('assets/my_paddle.png').convert_alpha()
+        self.image = pygame.image.load('assets/my_paddle.png')\
+            .convert_alpha()
         self.rect = self.image.get_rect()
         self.y_pos = Constants.screen_height - 50
         self.x_pos = Constants.screen_width / 2
