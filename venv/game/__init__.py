@@ -69,6 +69,9 @@ class Game:
         pygame.display.update()
         self.clock.tick(120)
 
+    def return_time(self):
+        return self.finish_time
+
     def draw(self):
         #self.screen.fill(self.bg_color)
         self.screen.blit(self.fon, (0, 0))
