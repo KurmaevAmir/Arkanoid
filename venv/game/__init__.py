@@ -105,6 +105,6 @@ class Game:
 
             text = self.font.render(f'Время: {self.real_time}', True,
                                     pygame.Color('white'))
-            self.screen.blit(text, (Constants.screen_width - 100,
-                                    Constants.screen_height - 40))
+            self.screen.blit(text, (Constants.screen_width - 110,
+                                    Constants.screen_height - 30))
             return False
