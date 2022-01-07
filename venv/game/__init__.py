@@ -52,6 +52,18 @@ class Game:
             self.player.move_left()
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             self.player.move_right()
+        if keys[pygame.K_ESCAPE]:
+            pass
+        # ООООООООЛООООООООО СВИНЬЯ НАЖАТИЕ НА ЭСКЕЙП ТУТ!!!!!!!!! НАДЕЮСЬ ТЫ СО СВОИМ ЗРЕНИЕМ В -9999 УВИДИШЬ КОММЕНТ А ЛУЧШЕ ДАЖЕ НА ПОЛ СТРАНИЦЫ ПРОСПАМЛЮ
+        # ASDAS
+        # ASD
+        # ASD
+        # ADSF
+        # ASDF
+        # ASDF
+        # AGD
+        # AG
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quit()
