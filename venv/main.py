@@ -59,14 +59,14 @@ def retrievingData(level, n, record=False):
     total_list = []
     if record:
         if len(result) == 1:
-            best_level = result
+            best_level = result[0]
         else:
             time = 999999
-            for i, j in enumerate(result):
-                if j[i][2] < time:
-                    time = j[i][2]
-                    best_level = j[i]
-        return best_level[0]
+            for i in result:
+                if int(i[2]) < time:
+                    time = int(i[2])
+                    best_level = i
+        return best_level
     elif n == 4:
         return result
     elif n < 4:
