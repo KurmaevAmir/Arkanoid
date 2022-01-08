@@ -58,6 +58,7 @@ def retrievingData(level, n, record=False):
     con.close()
     total_list = []
     if record:
+        best_level = [0, 1, "0000", "0000000000"]
         if len(result) == 1:
             best_level = result[0]
         else:
@@ -494,6 +495,9 @@ if __name__ == "__main__":
             time_list.append(time)
             LevelChange(screen)
         elif level_status and level_list[-1] == "level2":
+            level_status = False
+            time = game.return_time()
+            time_list.append(time)
             startMenu()
         if exit_code == "inGame":
             game.handle_events()
