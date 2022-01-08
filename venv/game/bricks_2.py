@@ -19,7 +19,7 @@ class Bricks:
 
         for r in range(Constants.brick_rows):
             for c in range(Constants.brick_cols):
-                brick = Brick(r, c - r)
+                brick = Brick(r, c)
                 self.all_sprites.add(brick)
                 self.all_bricks.add(brick)
 
