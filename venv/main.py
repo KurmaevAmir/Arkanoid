@@ -59,14 +59,14 @@ def retrievingData(level, n, record=False):
     total_list = []
     if record:
         if len(result) == 1:
-            best_level = result
+            best_level = result[0]
         else:
             time = 999999
-            for i, j in enumerate(result):
-                if j[i][2] < time:
-                    time = j[i][2]
-                    best_level = j[i]
-        return best_level[0]
+            for i in result:
+                if int(i[2]) < time:
+                    time = int(i[2])
+                    best_level = i
+        return best_level
     elif n == 4:
         return result
     elif n < 4:
@@ -464,7 +464,7 @@ if __name__ == "__main__":
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                terminate(n, level_list, time_list, session)
+                terminate()
             elif (event.type == pygame.KEYDOWN or
                   event.type == pygame.MOUSEBUTTONDOWN) and \
                   level_status is None:
