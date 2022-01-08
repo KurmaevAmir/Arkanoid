@@ -12,7 +12,8 @@ class Game:
     def __init__(self, bricks):
         pygame.init()
         self.returnStartWindow = False
-        self.screen = pygame.display.set_mode((Constants.screen_width, Constants.screen_height))
+        self.screen = pygame.display.set_mode((
+            Constants.screen_width, Constants.screen_height))
         self.clock = pygame.time.Clock()
 
         fullname = os.path.join('data', "main_background.png")
@@ -21,7 +22,6 @@ class Game:
         self.start_time = time.time()
         self.finish_time = 0
         self.real_time = 0
-        #self.bg_color = pygame.Color('black')
 
         self.font = pygame.font.Font('font/my_font.otf', 16)
         self.game_over = 0
@@ -57,15 +57,6 @@ class Game:
             self.player.move_right()
         if keys[pygame.K_ESCAPE]:
             self.returnStartWindow = True
-        # ООООООООЛООООООООО СВИНЬЯ НАЖАТИЕ НА ЭСКЕЙП ТУТ!!!!!!!!! НАДЕЮСЬ ТЫ СО СВОИМ ЗРЕНИЕМ В -9999 УВИДИШЬ КОММЕНТ А ЛУЧШЕ ДАЖЕ НА ПОЛ СТРАНИЦЫ ПРОСПАМЛЮ
-        # ASDAS
-        # ASD
-        # ASD
-        # ADSF
-        # ASDF
-        # ASDF
-        # AGD
-        # AG
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -96,7 +87,6 @@ class Game:
         return self.all_sprites
 
     def draw(self):
-        #self.screen.fill(self.bg_color)
         self.screen.blit(self.fon, (0, 0))
         if len(self.all_sprites) == 2:
             self.game_over = 1

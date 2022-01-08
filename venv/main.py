@@ -84,7 +84,6 @@ def saveDatabase():
     if session == '' or level_list == []:
         pass
     else:
-        # result = cur.execute(f"INSERT INTO RecordList VALUES({}, {}, {}, {})")
         for i in range(len(level_list)):
             if level_list[i] == "level1":
                 level_list[i] = 1
@@ -101,26 +100,11 @@ def saveDatabase():
     time_list = []
 
 
-def terminate(): #n, level_list, time_list, session
-    """n = int(n) + 1
-    if session_name is None:
-    #if game.return_time() == 0:
-        pass
-    else:
-        time_session = "127"
-        #time_session = game.return_time()
-        con = sqlite3.connect("database/Records.db")
-        cur = con.cursor()
-        time = cur.execute(f"INSERT INTO RecordList(ID, BestTime) VALUES({n}, {time_session})").fetchall()
-        name = cur.execute("INSERT INTO ID(SessionNumber, Session) VALUES(?, ?);", (n, session_name)).fetchall()
-        con.commit()
-        con.close()
-        f = open("database/BestTime.txt", "w", encoding='UTF-8')
-        f.write()
-        f.close()"""
+def terminate():
     saveDatabase()
     pygame.quit()
     sys.exit()
+
 
 def write_text(text, font, indent_list, text_coord, k, screen, axis):
     if axis == "y":
@@ -141,14 +125,6 @@ def write_text(text, font, indent_list, text_coord, k, screen, axis):
             text_rect.top = text_coord
             text_rect.x = indent_list[n]
             screen.blit(string_rendered, text_rect)
-
-
-"""def retrievingSessionList():
-    con = sqlite3.connect("database/Records.db")
-    cur = con.cursor()
-    result = cur.execute("SELECT Session FROM ID").fetchall()
-    con.close()
-    return result"""
 
 
 def generationSession(session_list):
@@ -179,22 +155,22 @@ class Buttons:
         for i in range(self.height):
             for j in range(self.width):
                 pygame.draw.rect(screen, pygame.Color("white"),
-                                 (self.left + j * (self.cell_size
-                                                   + self.len_width),
-                                  self.top + i * (self.cell_size
-                                                  + self.len_height),
+                                 (self.left + j *
+                                  (self.cell_size + self.len_width),
+                                  self.top + i *
+                                  (self.cell_size + self.len_height),
                                   self.len_width, self.len_height),
                                  1, border_radius=50),
                 self.coords.append([self.left + j * (self.cell_size +
                                                      self.len_width),
                                     self.top + i * (self.cell_size +
                                                     self.len_height),
-                                    self.left + self.len_width + j
-                                    * (self.cell_size +
-                                       self.len_width),
-                                    self.len_height + self.top + i
-                                    * (self.cell_size +
-                                       self.len_height)])
+                                    self.left + self.len_width + j *
+                                    (self.cell_size +
+                                     self.len_width),
+                                    self.len_height + self.top + i *
+                                    (self.cell_size +
+                                     self.len_height)])
 
     def get_cell(self, mouse_pos):
         x, y = mouse_pos
@@ -308,8 +284,8 @@ class Record:
     def __init__(self, screen, session, time, n):
         saveDatabase()
         self.screen = screen
-        best_session1, best_time1, n1, best_session2, best_time2,\
-        n2 = self.bestSession()
+        best_session1, best_time1, n1,
+        best_session2, best_time2, n2 = self.bestSession()
         self.text = ["Сессия \t Время \t Код сессии", "",
                      f"{best_session1} \t {best_time1} \t {n1}", "",
                      f"{best_session2} \t {best_time2} \t {n2}", "",
@@ -332,58 +308,14 @@ class Record:
             pygame.display.flip()
             clock.tick(FPS)
 
-    """def retrievingSession(self, best_time):
-        con = sqlite3.connect("database/Records.db")
-        cur = con.cursor()
-        result = cur.execute(f"SELECT Session FROM ID
-                                     WHERE SessionNumber=(
-                                 SELECT ID FROM RecordList
-                                     WHERE BestTime == {best_time})
-                              ").fetchall()
-        con.close()
-        result = result[0][0]
-        return result"""
-
-    """def retrievingData(self):
-        best_time = self.best_time
-        while len(best_time) != 4:
-            best_time = "0" + best_time
-        return (self.retrievingSession(self.best_time),
-                best_time)"""
-
     def bestSession(self):
-        """data1 = retrievingData("level1", 4)
-        data2 = retrievingData("level2", 4)
-        level1 = retrievingData("level1", 2)
-        level2 = retrievingData("level2", 2)
-        level1 = max(level1)
-        level2 = max(level2)"""
-        """if len(data1) == 1:
-            best_level1 = data1
-        else:
-            for i, j in enumerate(data1):
-                if level1 in j[i]:
-                    best_level1 = j[i]
-        if len(data2) == 1:
-            best_level2 = data2
-        else:
-            for i, j in enumerate(data2):
-                if level2 in j[i]:
-                    best_level2 = j[i]
-        best_level1 = data1.index(max(level1))
-        best_level1 = data1[best_level1]
-        best_level2 = data2.index(max(level2))
-        best_level2 = data2[best_level2]
-        return (best_level1[3], best_level1[2], best_level1[0],
-                best_level2[3], best_level2[2], best_level2[0],
-                max(retrievingData("level1", 1)))"""
         best_level1 = retrievingData("level1", 4, record=True)
         best_level2 = retrievingData("level2", 4, record=True)
         return (best_level1[3], best_level1[2], best_level1[0],
                 best_level2[3], best_level2[2], best_level2[0],)
 
 
-def startMenu():
+def startMenu(screen, session, time, n):
     global exit_code
     StartGame(screen)
     while exit_code != "start1":
@@ -450,24 +382,10 @@ class LevelChange:
 
 
 if __name__ == "__main__":
-    """print(retrievingData("level1"))
-    print(retrievingData("level2"))"""
     game = Game(Bricks)
-    f = open("database/BestTime.txt", mode="r", encoding="UTF-8")
-    best_time = f.read()
-    best_time = best_time
-    f.close()
     session_list = []
     session_list = retrievingData("level1", 3).copy()
     n = int(max(retrievingData("level1", 0))) + 1
-    """data1 = retrievingData("level1")
-    data2 = retrievingData("level2")
-    session_list = []
-    for i in data1:
-        session_list.append(i[3])
-    for i in data2:
-        session_list.append(i[3])"""
-    #session_list = retrievingSessionList()
     session = generationSession(session_list)
     time = "0000"
     pygame.init()
@@ -479,7 +397,30 @@ if __name__ == "__main__":
     level_list = []
     time_list = []
 
-    startMenu()
+    files_list = [
+        'assets/blue.png', 'assets/green.png', 'assets/grey.png',
+        'assets/my_ball.png', 'assets/my_paddle.png',
+        'assets/purple.png', 'assets/red.png', 'assets/yellow.png',
+        'data/fon.jpg', 'data/main_background.png',
+        'database/Records.db', 'font/my_font.otf',
+        'font/WellwaitFree Regular.otf', 'sounds/sound.mp3'
+    ]
+
+    for i in files_list:
+        try:
+            if 'assets' in i or 'data' in i:
+                testing_file = pygame.image.load(i)
+            elif 'database' in i:
+                con = sqlite3.connect(i)
+            elif 'font' in i:
+                testing_font = pygame.font.Font(i, 16)
+            elif 'sounds' in i:
+                pygame.mixer.init()
+                pygame.mixer.music.load(i)
+        except Exception:
+            print(f"File: {i} doesn't exist.")
+
+    startMenu(screen, session, time, n)
     level = Bricks
     level_status = False
     screen.blit(fon, (0, 0))
@@ -492,13 +433,11 @@ if __name__ == "__main__":
                 terminate()
             elif (event.type == pygame.KEYDOWN or
                   event.type == pygame.MOUSEBUTTONDOWN) and \
-                  level_status is None:
+                    level_status is None:
                 game = Game(level)
             elif game.goStartMenu():
                 del level_list[-1]
-                startMenu()
-                """game = Game(Bricks)
-                level1 = False"""
+                startMenu(screen, session, time, n)
         if level_status and level_list[-1] == "level1":
             level_status = False
             time = game.return_time()
@@ -508,7 +447,7 @@ if __name__ == "__main__":
             level_status = False
             time = game.return_time()
             time_list.append(time)
-            startMenu()
+            startMenu(screen, session, time, n)
         if exit_code == "inGame":
             game.handle_events()
             game.update()
@@ -525,16 +464,5 @@ if __name__ == "__main__":
             active_level = 'level2'
             level_list.append(active_level)
         level_status = game.draw()
-        """if exit_code == "level1" and level1 is False:
-            game.handle_events()
-            game.update()
-            level1 = game.draw()
-        elif exit_code == "level2":
-            game = Game(Bricks2)
-            exit_code = "inGame"
-        if level1:
-            LevelChange(screen)
-            game = Game(Bricks)
-            level1 = False"""
         pygame.display.update()
         clock.tick(FPS)
