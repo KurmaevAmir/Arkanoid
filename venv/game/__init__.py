@@ -11,6 +11,7 @@ import time
 class Game:
     def __init__(self, bricks):
         pygame.init()
+        self.returnStartWindow = False
         self.screen = pygame.display.set_mode((Constants.screen_width, Constants.screen_height))
         self.clock = pygame.time.Clock()
 
@@ -55,7 +56,7 @@ class Game:
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             self.player.move_right()
         if keys[pygame.K_ESCAPE]:
-            pass
+            self.returnStartWindow = True
         # ООООООООЛООООООООО СВИНЬЯ НАЖАТИЕ НА ЭСКЕЙП ТУТ!!!!!!!!! НАДЕЮСЬ ТЫ СО СВОИМ ЗРЕНИЕМ В -9999 УВИДИШЬ КОММЕНТ А ЛУЧШЕ ДАЖЕ НА ПОЛ СТРАНИЦЫ ПРОСПАМЛЮ
         # ASDAS
         # ASD
@@ -70,6 +71,11 @@ class Game:
             if event.type == pygame.QUIT:
                 quit()
                 sys.exit()
+
+    def goStartMenu(self):
+        if self.returnStartWindow:
+            return True
+        return False
 
     def update(self):
         if self.ball.is_off_screen():

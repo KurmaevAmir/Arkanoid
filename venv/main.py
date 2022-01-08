@@ -79,7 +79,8 @@ def retrievingData(level, n, record=False):
         return
 
 
-def terminate(): #n, level_list, time_list, session
+def saveDatabase():
+    global n, session, level_list, time_list
     if session == '' or level_list == []:
         pass
     else:
@@ -96,6 +97,11 @@ def terminate(): #n, level_list, time_list, session
                         " ?)", (n, level_list[i],
                                 time_list[i], session)).fetchall()
             con.commit()
+    level_list = []
+    time_list = []
+
+
+def terminate(): #n, level_list, time_list, session
     """n = int(n) + 1
     if session_name is None:
     #if game.return_time() == 0:
@@ -112,6 +118,7 @@ def terminate(): #n, level_list, time_list, session
         f = open("database/BestTime.txt", "w", encoding='UTF-8')
         f.write()
         f.close()"""
+    saveDatabase()
     pygame.quit()
     sys.exit()
 
@@ -299,6 +306,7 @@ class Rules:
 
 class Record:
     def __init__(self, screen, session, time, n):
+        saveDatabase()
         self.screen = screen
         best_session1, best_time1, n1, best_session2, best_time2,\
         n2 = self.bestSession()
@@ -450,7 +458,7 @@ if __name__ == "__main__":
     best_time = best_time
     f.close()
     session_list = []
-    session_list.append(retrievingData("level1", 3))
+    session_list = retrievingData("level1", 3).copy()
     n = len(session_list) + 1
     """data1 = retrievingData("level1")
     data2 = retrievingData("level2")
@@ -486,7 +494,9 @@ if __name__ == "__main__":
                   event.type == pygame.MOUSEBUTTONDOWN) and \
                   level_status is None:
                 game = Game(level)
-
+            elif game.goStartMenu():
+                del level_list[-1]
+                startMenu()
                 """game = Game(Bricks)
                 level1 = False"""
         if level_status and level_list[-1] == "level1":
