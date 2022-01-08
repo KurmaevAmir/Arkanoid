@@ -54,6 +54,18 @@ class Game:
             self.player.move_left()
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             self.player.move_right()
+        if keys[pygame.K_ESCAPE]:
+            pass
+        # ООООООООЛООООООООО СВИНЬЯ НАЖАТИЕ НА ЭСКЕЙП ТУТ!!!!!!!!! НАДЕЮСЬ ТЫ СО СВОИМ ЗРЕНИЕМ В -9999 УВИДИШЬ КОММЕНТ А ЛУЧШЕ ДАЖЕ НА ПОЛ СТРАНИЦЫ ПРОСПАМЛЮ
+        # ASDAS
+        # ASD
+        # ASD
+        # ADSF
+        # ASDF
+        # ASDF
+        # AGD
+        # AG
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quit()
@@ -110,6 +122,6 @@ class Game:
 
             text = self.font.render(f'Время: {self.real_time}', True,
                                     pygame.Color('white'))
-            self.screen.blit(text, (Constants.screen_width - 100,
-                                    Constants.screen_height - 40))
+            self.screen.blit(text, (Constants.screen_width - 110,
+                                    Constants.screen_height - 30))
             return False
