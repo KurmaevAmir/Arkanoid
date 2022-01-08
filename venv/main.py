@@ -79,13 +79,13 @@ def retrievingData(level, n, record=False):
 
 
 def terminate(): #n, level_list, time_list, session
+    print(n, level_list, time_list, session)
     if session == '' and level == []:
         pass
     else:
         con = sqlite3.connect("database/Records.db")
         cur = con.cursor()
-        result = cur.execute("INSERT INTO RecordList * VALUES(?, "
-                             "?, ?, ?)", (n, ))
+        # result = cur.execute(f"INSERT INTO RecordList VALUES({}, {}, {}, {})")
     """n = int(n) + 1
     if session_name is None:
     #if game.return_time() == 0:
@@ -448,6 +448,7 @@ if __name__ == "__main__":
                                  (WIDTH, HEIGHT))
     level_list = []
     time_list = []
+    active_level = 'level1'
 
     StartGame(screen)
     while exit_code != "start1":
@@ -464,7 +465,7 @@ if __name__ == "__main__":
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                terminate(n, level_list, time_list, session)
+                terminate()
             elif (event.type == pygame.KEYDOWN or
                   event.type == pygame.MOUSEBUTTONDOWN) and \
                   level_status is None:
@@ -475,7 +476,7 @@ if __name__ == "__main__":
         if level_status:
             LevelChange(screen)
             level_status = False
-            level_list.append(level)
+            level_list.append(active_level)
             time = game.return_time()
             time_list.append(time)
         if exit_code == "inGame":
@@ -485,10 +486,12 @@ if __name__ == "__main__":
             exit_code = "inGame"
             level = Bricks
             game = Game(level)
+            active_level = 'level1'
         elif exit_code == "level2":
             level = Bricks2
             game = Game(level)
             exit_code = "inGame"
+            active_level = 'level2'
         level_status = game.draw()
         """if exit_code == "level1" and level1 is False:
             game.handle_events()
