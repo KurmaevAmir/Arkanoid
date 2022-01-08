@@ -397,6 +397,7 @@ if __name__ == "__main__":
     level_list = []
     time_list = []
 
+    testing_boolean = True
     files_list = [
         'assets/blue.png', 'assets/green.png', 'assets/grey.png',
         'assets/my_ball.png', 'assets/my_paddle.png',
@@ -412,20 +413,24 @@ if __name__ == "__main__":
                 testing_file = pygame.image.load(i)
             elif 'database' in i:
                 con = sqlite3.connect(i)
+                con.close()
             elif 'font' in i:
                 testing_font = pygame.font.Font(i, 16)
             elif 'sounds' in i:
                 pygame.mixer.init()
                 pygame.mixer.music.load(i)
         except Exception:
+            testing_boolean = False
             print(f"File: {i} doesn't exist.")
+            break
 
-    startMenu(screen, session, time, n)
+    if testing_boolean:
+        startMenu(screen, session, time, n)
     level = Bricks
     level_status = False
     screen.blit(fon, (0, 0))
     """level1 = False"""
-    while True:
+    while testing_boolean:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 if exit_code == "inGame":
