@@ -459,7 +459,7 @@ if __name__ == "__main__":
     f.close()
     session_list = []
     session_list = retrievingData("level1", 3).copy()
-    n = len(session_list) + 1
+    n = int(max(retrievingData("level1", 0))) + 1
     """data1 = retrievingData("level1")
     data2 = retrievingData("level2")
     session_list = []
