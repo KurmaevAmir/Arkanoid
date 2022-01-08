@@ -11,7 +11,7 @@ bricks = [
 ]
 
 
-class Bricks:
+class Bricks2:
     def __init__(self, all_sprites):
         self.score = 0
         self.all_sprites = all_sprites

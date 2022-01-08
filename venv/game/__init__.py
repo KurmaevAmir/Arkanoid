@@ -9,7 +9,7 @@ import time
 
 
 class Game:
-    def __init__(self):
+    def __init__(self, bricks):
         pygame.init()
         self.screen = pygame.display.set_mode((Constants.screen_width, Constants.screen_height))
         self.clock = pygame.time.Clock()
@@ -31,7 +31,9 @@ class Game:
         self.all_sprites = pygame.sprite.Group()
         self.all_sprites.add(self.player, self.ball)
 
-        self.bricks = Bricks(self.all_sprites)
+        self.level = bricks(self.all_sprites)
+
+        self.bricks = self.level
 
     def reset(self):
         self.real_time = 0
@@ -42,7 +44,7 @@ class Game:
         self.ball = Ball()
         self.all_sprites.empty()
         self.all_sprites.add(self.player, self.ball)
-        self.bricks = Bricks(self.all_sprites)
+        self.bricks = self.level
 
     def handle_events(self):
         self.real_time = "{:.1f}s" \
@@ -71,6 +73,9 @@ class Game:
 
     def return_time(self):
         return self.finish_time
+
+    def return_sprites(self):
+        return self.all_sprites
 
     def draw(self):
         #self.screen.fill(self.bg_color)

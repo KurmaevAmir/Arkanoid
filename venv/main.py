@@ -6,6 +6,8 @@ import random
 import pygame
 
 from game import Game
+from game.bricks import Bricks
+from game.bricks_2 import Bricks2
 
 global exit_code, symbols, exit_code_list_level1, \
     exit_code_list_level2
@@ -41,7 +43,29 @@ FPS = 120
 WIDTH, HEIGHT = 600, 600
 
 
+"""def retrievingData():
+    con = sqlite3.connect("database/Records.db")
+    cur = con.cursor()
+    result = cur.execute("""""")"""
+
+
 def terminate():
+    """n = int(n) + 1
+    if session_name is None:
+    #if game.return_time() == 0:
+        pass
+    else:
+        time_session = "127"
+        #time_session = game.return_time()
+        con = sqlite3.connect("database/Records.db")
+        cur = con.cursor()
+        time = cur.execute(f"INSERT INTO RecordList(ID, BestTime) VALUES({n}, {time_session})").fetchall()
+        name = cur.execute("INSERT INTO ID(SessionNumber, Session) VALUES(?, ?);", (n, session_name)).fetchall()
+        con.commit()
+        con.close()
+        f = open("database/BestTime.txt", "w", encoding='UTF-8')
+        f.write()
+        f.close()"""
     pygame.quit()
     sys.exit()
 
@@ -87,8 +111,6 @@ def generationSession(session_list):
 class Buttons:
     def __init__(self, width, height, len_width, len_height, left,
                  top, cell_size, screen):
-        """self.input_list = input_list # input_list = [width, height, len_width, len_height, left, top, cell_size, text,
-        # font, text_rect_list, text_coord, k, screen]"""
         self.width = width
         self.height = height
         self.len_width = len_width
@@ -254,17 +276,17 @@ class Record:
             pygame.display.flip()
             clock.tick(FPS)
 
-    def retrievingSession(self, best_time):
+    """def retrievingSession(self, best_time):
         con = sqlite3.connect("database/Records.db")
         cur = con.cursor()
-        result = cur.execute(f"""SELECT SESSION FROM ID
+        result = cur.execute(f"SELECT Session FROM ID
                                      WHERE SessionNumber=(
                                  SELECT ID FROM RecordList
                                      WHERE BestTime == {best_time})
-                              """).fetchall()
+                              ").fetchall()
         con.close()
         result = result[0][0]
-        return result
+        return result"""
 
     def retrievingData(self):
         best_time = self.best_time
@@ -329,13 +351,17 @@ class LevelChange:
 
 
 if __name__ == "__main__":
-    game = Game()
+    game = Game(Bricks)
     f = open("database/BestTime.txt", mode="r", encoding="UTF-8")
     best_time = f.read()
+    best_time = best_time
     f.close()
     session_list = retrievingSessionList()
     session = generationSession(session_list)
-    time = "0000"
+    if game.return_time() == 0:
+        time = "0000"
+    """else:
+        time = game.return_time()"""
     pygame.init()
     clock = pygame.time.Clock()
     size = WIDTH, HEIGHT
@@ -351,26 +377,46 @@ if __name__ == "__main__":
             Record(screen, session, time, best_time)
         StartGame(screen)
     exit_code = "level1"
+    level = Bricks
+    level_status = False
     screen.blit(fon, (0, 0))
-    level1 = False
+    """level1 = False"""
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
-            elif (event.type == pygame.KEYDOWN or \
+            elif (event.type == pygame.KEYDOWN or
                   event.type == pygame.MOUSEBUTTONDOWN) and \
-                    level1 is None:
-                game = Game()
-                level1 = False
-        if exit_code == "level1" and level1 is False:
+                  level_status is None:
+                game = Game(level)
+
+                """game = Game(Bricks)
+                level1 = False"""
+        if level_status:
+            LevelChange(screen)
+            level_status = False
+        if exit_code == "inGame":
+            game.handle_events()
+            game.update()
+        elif exit_code == "level1":
+            exit_code = "inGame"
+            level = Bricks
+            game = Game(level)
+        elif exit_code == "level2":
+            level = Bricks2
+            game = Game(level)
+            exit_code = "inGame"
+        level_status = game.draw()
+        """if exit_code == "level1" and level1 is False:
             game.handle_events()
             game.update()
             level1 = game.draw()
         elif exit_code == "level2":
-            print("Переходим ко второму уровню!")
+            game = Game(Bricks2)
+            exit_code = "inGame"
         if level1:
             LevelChange(screen)
-            game = Game()
-            level1 = False
+            game = Game(Bricks)
+            level1 = False"""
         pygame.display.update()
         clock.tick(FPS)
