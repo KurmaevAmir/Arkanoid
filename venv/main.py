@@ -82,10 +82,19 @@ def terminate(): #n, level_list, time_list, session
     if session == '' and level == []:
         pass
     else:
-        con = sqlite3.connect("database/Records.db")
-        cur = con.cursor()
-        result = cur.execute("INSERT INTO RecordList * VALUES(?, "
-                             "?, ?, ?)", (n, ))
+        # result = cur.execute(f"INSERT INTO RecordList VALUES({}, {}, {}, {})")
+        for i in range(len(level_list)):
+            if level_list[i] == "level1":
+                level_list[i] = 1
+            elif level_list[i] == "level2":
+                level_list[i] = 2
+            con = sqlite3.connect("database/Records.db")
+            cur = con.cursor()
+            cur.execute("INSERT INTO RecordList(Id, IdLevel, Time,"
+                        " Session) VALUES(?, ?, ?,"
+                        " ?)", (n, level_list[i],
+                                time_list[i], session)).fetchall()
+            con.commit()
     """n = int(n) + 1
     if session_name is None:
     #if game.return_time() == 0:
@@ -365,6 +374,18 @@ class Record:
                 best_level2[3], best_level2[2], best_level2[0],)
 
 
+def startMenu():
+    global exit_code
+    StartGame(screen)
+    while exit_code != "start1":
+        if exit_code == "start2":
+            Rules(screen)
+        elif exit_code == "start3":
+            Record(screen, session, time, n)
+        StartGame(screen)
+    exit_code = "level1"
+
+
 class LevelChange:
     def __init__(self, screen):
         self.screen = screen
@@ -373,9 +394,9 @@ class LevelChange:
         self.cycle()
 
     def text(self):
-        text = ["Вернутся", "Следующий"]
+        text = ["Вернуться", "Следующий"]
         font = pygame.font.Font("font/WellwaitFree Regular.otf", 26)
-        text_rect_list = [28, 420]
+        text_rect_list = [22, 420]
         text_coord = 550
         k = 0
         write_text(text, font, text_rect_list, text_coord, k,
@@ -448,15 +469,10 @@ if __name__ == "__main__":
                                  (WIDTH, HEIGHT))
     level_list = []
     time_list = []
+    active_level = 'level1'
+    level_list.append(active_level)
 
-    StartGame(screen)
-    while exit_code != "start1":
-        if exit_code == "start2":
-            Rules(screen)
-        elif exit_code == "start3":
-            Record(screen, session, time, n)
-        StartGame(screen)
-    exit_code = "level1"
+    startMenu()
     level = Bricks
     level_status = False
     screen.blit(fon, (0, 0))
@@ -472,12 +488,15 @@ if __name__ == "__main__":
 
                 """game = Game(Bricks)
                 level1 = False"""
-        if level_status:
-            LevelChange(screen)
+        if level_status and level_list[-1] != "level1":
             level_status = False
-            level_list.append(level)
+            if len(level_list) != 1:
+                level_list.append(active_level)
             time = game.return_time()
             time_list.append(time)
+            LevelChange(screen)
+        elif level_list and level_list[-1] != "level2":
+            startMenu()
         if exit_code == "inGame":
             game.handle_events()
             game.update()
@@ -485,10 +504,12 @@ if __name__ == "__main__":
             exit_code = "inGame"
             level = Bricks
             game = Game(level)
+            active_level = 'level1'
         elif exit_code == "level2":
             level = Bricks2
             game = Game(level)
             exit_code = "inGame"
+            active_level = 'level2'
         level_status = game.draw()
         """if exit_code == "level1" and level1 is False:
             game.handle_events()

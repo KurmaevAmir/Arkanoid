@@ -97,7 +97,7 @@ class Game:
 
         if self.game_over != 0:
             if self.finish_time == 0:
-                self.finish_time = "time elapsed: {:.1f}s" \
+                self.finish_time = "{:.1f}"\
                     .format(time.time() - self.start_time)
             if self.game_over == 1:
                 text = self.font.render("", True,
