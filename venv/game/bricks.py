@@ -24,7 +24,8 @@ class Bricks:
                 self.all_bricks.add(brick)
 
     def check_collisions(self, ball):
-        hits = pygame.sprite.spritecollide(ball, self.all_bricks, False)
+        hits = pygame.sprite.spritecollide(ball,
+                                           self.all_bricks, False)
         if hits:
             hit_rect = hits[0].rect
             if ball.velocity[0] > 0:

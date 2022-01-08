@@ -45,6 +45,7 @@ def terminate():
     pygame.quit()
     sys.exit()
 
+
 def write_text(text, font, indent_list, text_coord, k, screen, axis):
     if axis == "y":
         for n, line in enumerate(text):
@@ -87,8 +88,6 @@ def generationSession(session_list):
 class Buttons:
     def __init__(self, width, height, len_width, len_height, left,
                  top, cell_size, screen):
-        """self.input_list = input_list # input_list = [width, height, len_width, len_height, left, top, cell_size, text,
-        # font, text_rect_list, text_coord, k, screen]"""
         self.width = width
         self.height = height
         self.len_width = len_width
@@ -104,22 +103,21 @@ class Buttons:
         for i in range(self.height):
             for j in range(self.width):
                 pygame.draw.rect(screen, pygame.Color("white"),
-                                 (self.left + j * (self.cell_size
-                                                   + self.len_width),
-                                  self.top + i * (self.cell_size
-                                                  + self.len_height),
+                                 (self.left + j *
+                                  (self.cell_size + self.len_width),
+                                  self.top + i *
+                                  (self.cell_size + self.len_height),
                                   self.len_width, self.len_height),
                                  1, border_radius=50),
                 self.coords.append([self.left + j * (self.cell_size +
                                                      self.len_width),
                                     self.top + i * (self.cell_size +
                                                     self.len_height),
-                                    self.left + self.len_width + j
-                                    * (self.cell_size +
-                                       self.len_width),
-                                    self.len_height + self.top + i
-                                    * (self.cell_size +
-                                       self.len_height)])
+                                    self.left + self.len_width + j *
+                                    (self.cell_size + self.len_width),
+                                    self.len_height + self.top + i *
+                                    (self.cell_size + self.len_height)
+                                    ])
 
     def get_cell(self, mouse_pos):
         x, y = mouse_pos
@@ -357,7 +355,7 @@ if __name__ == "__main__":
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
-            elif (event.type == pygame.KEYDOWN or \
+            elif (event.type == pygame.KEYDOWN or
                   event.type == pygame.MOUSEBUTTONDOWN) and \
                     level1 is None:
                 game = Game()
