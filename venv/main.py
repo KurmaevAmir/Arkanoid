@@ -79,7 +79,7 @@ def retrievingData(level, n, record=False):
 
 
 def terminate(): #n, level_list, time_list, session
-    if session == '' and level == []:
+    if session == '' or level_list == []:
         pass
     else:
         # result = cur.execute(f"INSERT INTO RecordList VALUES({}, {}, {}, {})")
@@ -469,8 +469,6 @@ if __name__ == "__main__":
                                  (WIDTH, HEIGHT))
     level_list = []
     time_list = []
-    active_level = 'level1'
-    level_list.append(active_level)
 
     startMenu()
     level = Bricks
@@ -480,6 +478,8 @@ if __name__ == "__main__":
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                if exit_code == "inGame":
+                    del level_list[-1]
                 terminate()
             elif (event.type == pygame.KEYDOWN or
                   event.type == pygame.MOUSEBUTTONDOWN) and \
@@ -488,14 +488,12 @@ if __name__ == "__main__":
 
                 """game = Game(Bricks)
                 level1 = False"""
-        if level_status and level_list[-1] != "level1":
+        if level_status and level_list[-1] == "level1":
             level_status = False
-            if len(level_list) != 1:
-                level_list.append(active_level)
             time = game.return_time()
             time_list.append(time)
             LevelChange(screen)
-        elif level_list and level_list[-1] != "level2":
+        elif level_status and level_list[-1] == "level2":
             startMenu()
         if exit_code == "inGame":
             game.handle_events()
@@ -505,11 +503,13 @@ if __name__ == "__main__":
             level = Bricks
             game = Game(level)
             active_level = 'level1'
+            level_list.append(active_level)
         elif exit_code == "level2":
             level = Bricks2
             game = Game(level)
             exit_code = "inGame"
             active_level = 'level2'
+            level_list.append(active_level)
         level_status = game.draw()
         """if exit_code == "level1" and level1 is False:
             game.handle_events()
