@@ -73,7 +73,8 @@ class Game:
             self.player.lose_life()
             if self.player.lives == 0:
                 self.game_over = -1
-            self.ball.reset()
+            if self.game_over != -1:
+                self.ball.reset()
         self.ball.check_collide_paddle(self.player)
         self.bricks.check_collisions(self.ball)
         self.all_sprites.update()
