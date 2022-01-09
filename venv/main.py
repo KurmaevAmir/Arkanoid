@@ -389,6 +389,7 @@ if __name__ == "__main__":
     session = generationSession(session_list)
     time = "0000"
     pygame.init()
+    pygame.display.set_caption('Арканоид')
     clock = pygame.time.Clock()
     size = WIDTH, HEIGHT
     screen = pygame.display.set_mode(size)
