@@ -396,27 +396,25 @@ if __name__ == "__main__":
                                  (WIDTH, HEIGHT))
     level_list = []
     time_list = []
+    files_list = []
 
     testing_boolean = True
-    files_list = [
-        'assets/blue.png', 'assets/green.png', 'assets/grey.png',
-        'assets/my_ball.png', 'assets/my_paddle.png',
-        'assets/purple.png', 'assets/red.png', 'assets/yellow.png',
-        'data/fon.jpg', 'data/main_background.png',
-        'database/Records.db', 'font/my_font.otf',
-        'font/WellwaitFree Regular.otf', 'sounds/sound.mp3'
-    ]
+    f = open("files.txt", "r")
+    lines = f.read().split("\n")
+    f.close()
+    for i in lines:
+        files_list.append(i.strip())
 
     for i in files_list:
         try:
             if 'assets' in i or 'data/' in i:
                 testing_file = pygame.image.load(i)
-            elif 'database' in i:
-                con = sqlite3.connect(i)
-                con.close()
-            elif 'font' in i:
+            elif 'database/' in i:
+                con2 = sqlite3.connect(i)
+                con2.close()
+            elif 'font/' in i:
                 testing_font = pygame.font.Font(i, 16)
-            elif 'sounds' in i:
+            elif 'sounds/' in i:
                 pygame.mixer.init()
                 pygame.mixer.music.load(i)
         except Exception:
