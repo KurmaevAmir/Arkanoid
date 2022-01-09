@@ -284,8 +284,8 @@ class Record:
     def __init__(self, screen, session, time, n):
         saveDatabase()
         self.screen = screen
-        best_session1, best_time1, n1,
-        best_session2, best_time2, n2 = self.bestSession()
+        best_session1, best_time1, n1, best_session2, best_time2,\
+        n2 = self.bestSession()
         self.text = ["Сессия \t Время \t Код сессии", "",
                      f"{best_session1} \t {best_time1} \t {n1}", "",
                      f"{best_session2} \t {best_time2} \t {n2}", "",
@@ -409,7 +409,7 @@ if __name__ == "__main__":
 
     for i in files_list:
         try:
-            if 'assets' in i or 'data' in i:
+            if 'assets' in i or 'data/' in i:
                 testing_file = pygame.image.load(i)
             elif 'database' in i:
                 con = sqlite3.connect(i)
