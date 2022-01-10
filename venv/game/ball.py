@@ -2,6 +2,10 @@ import pygame
 from random import randint
 from game.constants import Constants
 
+pygame.mixer.init()
+pygame.mixer.music.load('sounds/sound.mp3')
+pygame.mixer.music.set_volume(0.1)
+
 
 class Ball(pygame.sprite.Sprite):
     def __init__(self):
@@ -37,8 +41,9 @@ class Ball(pygame.sprite.Sprite):
 
     def check_collide_paddle(self, paddle):
         if self.rect.colliderect(paddle.rect):
-            if abs(self.rect.bottom - paddle.rect.top) < Constants.\
-                    collision_threshold and self.velocity[1] > 0:
+            if abs(self.rect.bottom - paddle.rect.top) < \
+                    Constants.collision_threshold and \
+                    self.velocity[1] > 0:
                 self.velocity[1] = -self.velocity[1]
                 self.velocity[0] += abs(paddle.direction)
                 if self.velocity[0] > Constants.max_ball_speed:
@@ -52,11 +57,14 @@ class Ball(pygame.sprite.Sprite):
         return self.y_pos > Constants.screen_height
 
     def bounce_y(self):
+        pygame.mixer.music.play()
         self.velocity[1] *= -1
 
     def bounce_x(self):
+        pygame.mixer.music.play()
         self.velocity[0] *= -1
 
     def bounce_xy(self):
+        pygame.mixer.music.play()
         self.velocity[1] *= -1
         self.velocity[0] *= -1
