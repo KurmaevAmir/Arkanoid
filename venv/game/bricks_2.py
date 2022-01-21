@@ -11,7 +11,7 @@ bricks = [
 ]
 
 
-class Bricks:
+class Bricks2:
     def __init__(self, all_sprites):
         self.score = 0
         self.all_sprites = all_sprites
@@ -19,10 +19,7 @@ class Bricks:
 
         for r in range(Constants.brick_rows):
             for c in range(Constants.brick_cols):
-                if (c == 0 or c == 7 or c == 4 or c == 3) \
-                        and r <= 4 or r == 0:
-                    brick = Brick(r, c)
-
+                brick = Brick(r, c)
                 self.all_sprites.add(brick)
                 self.all_bricks.add(brick)
 
