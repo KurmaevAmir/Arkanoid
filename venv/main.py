@@ -6,8 +6,8 @@ import random
 import pygame
 
 from game import Game
-from game.bricks import Bricks
-from game.bricks_2 import Bricks2
+from levels.bricks import Bricks
+from levels.bricks_2 import Bricks2
 
 global exit_code, symbols, exit_code_list_level1, \
     exit_code_list_level2, n, level_list, time_list, session

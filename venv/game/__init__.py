@@ -4,7 +4,7 @@ import os
 from game.constants import Constants
 from game.player import Player
 from game.ball import Ball
-from game.bricks import Bricks
+from levels.bricks import Bricks
 import time
 
 
