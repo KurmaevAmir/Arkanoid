@@ -284,7 +284,7 @@ class Record:
     def __init__(self, screen, session, time, n):
         saveDatabase()
         self.screen = screen
-        best_session1, best_time1, n1, best_session2, best_time2,\
+        best_session1, best_time1, n1, best_session2, best_time2,
         n2 = self.bestSession()
         self.text = ["Сессия \t Время \t Код сессии", "",
                      f"{best_session1} \t {best_time1} \t {n1}", "",
@@ -428,7 +428,6 @@ if __name__ == "__main__":
     level = Bricks
     level_status = False
     screen.blit(fon, (0, 0))
-    """level1 = False"""
     while testing_boolean:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
