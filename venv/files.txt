@@ -1,0 +1,14 @@
+assets/blue.png
+assets/green.png
+assets/grey.png
+assets/my_ball.png
+assets/my_paddle.png
+assets/purple.png
+assets/red.png
+assets/yellow.png
+data/fon.jpg
+data/main_background.png
+database/Records.db
+font/my_font.otf
+font/WellwaitFree Regular.otf
+sounds/sound.mp3
