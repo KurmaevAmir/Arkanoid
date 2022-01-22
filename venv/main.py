@@ -287,17 +287,20 @@ class Record:
         best_session1, best_time1, n1, best_session2, best_time2,\
         n2 = self.bestSession()
         self.text = ["Сессия \t Время \t Код сессии", "",
+                     "", "Лучшее время за 1 уровень", "",
                      f"{best_session1} \t {best_time1} \t {n1}", "",
+                     "", "Лучшее время за 2 уровень", "",
                      f"{best_session2} \t {best_time2} \t {n2}", "",
+                     "", "Текущая сессия", "",
                      f"{session} \t {time} \t {n + 1}"]
         text_coord = 50
         font = pygame.font.Font(None, 28)
-        indent_list = [208] * 7
+        indent_list = [208] * 16
         fon = pygame.transform.scale(load_image('fon.jpg'),
                                      (WIDTH, HEIGHT))
         screen.blit(fon, (0, 0))
         write_text(self.text, font, indent_list, text_coord,
-                   25, self.screen, "y")
+                   10, self.screen, "y")
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -428,7 +431,6 @@ if __name__ == "__main__":
     level = Bricks
     level_status = False
     screen.blit(fon, (0, 0))
-    """level1 = False"""
     while testing_boolean:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
