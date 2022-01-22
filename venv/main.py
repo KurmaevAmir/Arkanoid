@@ -284,7 +284,7 @@ class Record:
     def __init__(self, screen, session, time, n):
         saveDatabase()
         self.screen = screen
-        best_session1, best_time1, n1, best_session2, best_time2,
+        best_session1, best_time1, n1, best_session2, best_time2, \
         n2 = self.bestSession()
         self.text = ["Сессия \t Время \t Код сессии", "",
                      "", "Лучшее время за 1 уровень", "",
